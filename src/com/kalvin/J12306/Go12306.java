@@ -33,6 +33,7 @@ public class Go12306 {
 
     private String username;    // 12306用户账号
     private String password;    // 密码
+    private String idCardLast4;    // 身份证后四位
 
     private TicketCache ticketCache = TicketCache.getInstance();
 
@@ -52,6 +53,12 @@ public class Go12306 {
     public Go12306 initUser(String username, String password) {
         this.username = username;
         this.password = password;
+        return this;
+    }
+    public Go12306 initUser(String username, String password, String idCardLast4) {
+        this.username = username;
+        this.password = password;
+        this.idCardLast4 = idCardLast4;
         return this;
     }
 
@@ -84,7 +91,7 @@ public class Go12306 {
         // 构建会话
         this.session = new Session();
         // 开始登录
-        Login login = new Login(this.session, this.username, this.password);
+        Login202601 login = new Login202601(this.session, this.username, this.password, this.idCardLast4);
         UserInfoDTO userInfo = login.send();
         int tryLoginCount = 0;
         while (true) {
@@ -110,7 +117,7 @@ public class Go12306 {
 //        int intervalTime = querySpeed / threadPoolSize;
 //        ExecutorService executorService = Executors.newFixedThreadPool(threadPoolSize);
 
-        int queryA302Count = 0, queryZ302Count = 0;
+        int queryA302Count = 0, queryZ302Count = 0, queryG302Count = 0;
         String usingQuery = (String) YmlUtil.get("j12306.ticket.queryp");
         boolean isPutTime = false;
         stopLop: while (true) {
@@ -120,6 +127,8 @@ public class Go12306 {
                     httpResponse = ticket.queryA();
                 } else if ("Z".equals(usingQuery)) {
                     httpResponse = ticket.queryZ();
+                } else if ("G".equals(usingQuery)) {
+                    httpResponse = ticket.queryG();
                 } else {
                     throw new J12306Exception("查票接口异常，请确认config.yml[j12306.ticket.queryp]配置正确");
                 }
@@ -227,10 +236,16 @@ public class Go12306 {
                     if ("Z".equals(usingQuery)) {
                         queryZ302Count++;
                     }
+                    if ("G".equals(usingQuery)) {
+                        queryG302Count++;
+                    }
                     if (queryA302Count >= Constants.MAX_302) {
                         usingQuery = "Z";
                     }
                     if (queryZ302Count >= Constants.MAX_302) {
+                        usingQuery = "A";
+                    }
+                    if (queryG302Count >= Constants.MAX_302) {
                         usingQuery = "A";
                     }
                 }

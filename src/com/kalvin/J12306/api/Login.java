@@ -27,9 +27,9 @@ import java.util.List;
 public class Login {
 
     private static final Log log = LogFactory.get();
-    private Session session;
-    private String username;
-    private String password;
+    protected Session session;
+    protected String username;
+    protected String password;
 
     public Login(Session session, String username, String password) {
         this.session = session;
@@ -226,7 +226,7 @@ public class Login {
     /**
      * 获取用户信息
      */
-    private UserInfoDTO getUserInfo() {
+    protected UserInfoDTO getUserInfo() {
         HttpResponse httpResponse = this.session.httpClient.send(UrlsEnum.GET_USER_INFO);
         String body = httpResponse.body();
 //        log.info("queryPassengerInfo body={}", body);

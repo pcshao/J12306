@@ -63,8 +63,11 @@ public class SubmitOrderRequest {
 //                log.info("submitOrderRequest body ={}", body);
                 JSONObject jsonObject = JSONUtil.parseObj(body);
                 boolean status = (boolean) jsonObject.get("status");
+                // 20260125 支持最新的订单提交的返回结果识别与无验证码场景
                 // 提交订单
-                if (status && "N".equals(jsonObject.get("data").toString())) {
+                String data = jsonObject.getStr("data");
+                if (status && ("N".equals(data) ||
+                        (this.session.spiderMode202601() && "0".equals(data)))) {
                     RepeatSubmitToken repeatSubmitToken = new RepeatSubmitToken(this.session);
                     SubmitTicketInfoDTO submitTicketInfo = repeatSubmitToken.getSubmitTicketInfo();
                     // GetJS
@@ -74,7 +77,9 @@ public class SubmitOrderRequest {
                     final String passengerTicketStr = passengerDTOS.getPassengerTicketStr();
                     final String oldPassengerStr = passengerDTOS.getOldPassengerStr();
                     // 获取订单页面验证码
-                    new Captcha(this.session).getOrderCaptchaImg();
+                    if (!this.session.spiderMode202601()) {
+                        new Captcha(this.session).getOrderCaptchaImg();
+                    }
                     // 检查订单
                     new CheckOrderInfo(
                             this.session,

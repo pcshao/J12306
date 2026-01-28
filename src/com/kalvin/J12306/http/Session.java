@@ -19,6 +19,9 @@ import java.util.List;
  */
 public class Session {
 
+    public static final String MODE_202601 = "202601";
+    public String spiderMode;  // 用yyyymm表示当前启用的模式
+
     public HttpClient httpClient;
     public String token;
     public String cookie;
@@ -126,4 +129,11 @@ public class Session {
         }
     }
 
+    public Boolean spiderMode202601() {
+        return MODE_202601.equals(spiderMode);
+    }
+
+    public void setSpiderMode(String spiderMode) {
+        this.spiderMode = spiderMode;
+    }
 }

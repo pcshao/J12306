@@ -18,7 +18,7 @@ public class Main {
 
     public static void selectTicket1() {
         Go12306.newInstance()
-                .initUser("182xxxx", "123456")    // 用户名/密码
+                .initUser("182xxxx", "123456", "身份证后四位")    // 用户名/密码/身份证后四位
                 .initBookTicketInfo("2020-01-21", // 乘车日期
                         "广州",   // 始发站
                         "怀集",   // 到达站

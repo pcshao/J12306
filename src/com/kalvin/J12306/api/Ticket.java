@@ -43,6 +43,9 @@ public class Ticket {
             case "Z":
                 urlsEnum = UrlsEnum.QUERY_Z_TICKET;
                 break;
+            case "G":
+                urlsEnum = UrlsEnum.QUERY_G_TICKET;
+                break;
             default:
                 throw new J12306Exception("无效的查票接口");
         }
@@ -64,5 +67,9 @@ public class Ticket {
 
     public HttpResponse queryZ() {
         return this.query("Z");
+    }
+
+    public HttpResponse queryG() {
+        return this.query("G");
     }
 }

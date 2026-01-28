@@ -6,6 +6,23 @@ package com.kalvin.J12306.config;
  */
 public enum UrlsEnum {
 
+    // begin 20260125 基于余票查询页面的手机号验证码登录
+    LOGIN_VERIFY(new UrlConfig(   // web登录前校验
+            "https://kyfw.12306.cn/passport/web/checkLoginVerify",   // url地址
+            "post",  // 请求方法
+           "https://kyfw.12306.cn/otn/leftTicket/init" // referer
+    )),
+    LOGIN_MESSAGE_CODE(new UrlConfig(   // web登录手机验证码
+            "https://kyfw.12306.cn/passport/web/getMessageCode",   // url地址
+            "post",  // 请求方法
+            "https://kyfw.12306.cn/otn/leftTicket/init" // referer
+    )),
+    LOGIN_202601(new UrlConfig(   // web登录换票据接口
+            "https://kyfw.12306.cn/passport/web/login",   // url地址
+            "post",  // 请求方法
+            "https://kyfw.12306.cn/otn/leftTicket/init" // referer
+    )),
+    // end
     LOG_DEVICE(new UrlConfig(   // 设备信息
             "https://kyfw.12306.cn/otn/HttpZF/logdevice",   // url地址
             "get",  // 请求方法
@@ -73,6 +90,11 @@ public enum UrlsEnum {
     )),
     QUERY_Z_TICKET(new UrlConfig( // 查票接口Z
             "https://kyfw.12306.cn/otn/leftTicket/queryZ?leftTicketDTO.train_date={0}&leftTicketDTO.from_station={1}&leftTicketDTO.to_station={2}&purpose_codes=ADULT",
+            "post",
+            "https://kyfw.12306.cn/otn/leftTicket/init"
+    )),
+    QUERY_G_TICKET(new UrlConfig( // 查票接口G
+            "https://kyfw.12306.cn/otn/leftTicket/queryG?leftTicketDTO.train_date={0}&leftTicketDTO.from_station={1}&leftTicketDTO.to_station={2}&purpose_codes=ADULT",
             "post",
             "https://kyfw.12306.cn/otn/leftTicket/init"
     )),
